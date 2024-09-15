@@ -4,6 +4,7 @@ import sys
 from fastapi import FastAPI, logger
 from fastapi.middleware.cors import CORSMiddleware
 from src.routers.sync.sync import router as SYNC
+from .services.firebase_listener_service import firebase_listener
 
 from .utils.utils import read_markdown_file
 
@@ -23,9 +24,10 @@ app = FastAPI(
 
 @app.on_event("startup")
 async def startup_event():
-    logger.log(logging.INFO, "Server Started.")
+    firebase_listener.start_listening()
+    print("Firebase listener started.")
 
-app.include_router(SYNC, tags=["Stain detection"])
+app.include_router(SYNC, tags=["SuperJoin Assignment"])
 
 
 origins = ["*"]
