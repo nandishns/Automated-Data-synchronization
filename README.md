@@ -98,7 +98,7 @@ GOOGLE_SHEET_NAME=
 FIREBASE_ADMIN_KEY_PATH=
 ```
 
-6. **Running the Project**:
+5. **Running the Project**:
    - Start the FastAPI server.
    - Make changes in Google Sheets or Firestore to see real-time synchronization in action.
 
