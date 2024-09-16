@@ -82,7 +82,6 @@ System Design Diagram
 
 2. **Installation**:
    - Clone the repository.
-   - Install dependencies using `pip install -r requirements.txt`.
    - Set up environment variables for Google Sheets and Firebase credentials.
    - Deploy the FastAPI server.
 
@@ -95,7 +94,7 @@ System Design Diagram
    - Make changes in Google Sheets or Firestore to see real-time synchronization in action.
 
 ### Video Demo
-*Add your video demo link here.*
+https://drive.google.com/drive/folders/14DzkV5ppT_sDwri0JO1XgzqZ_u8HoRDu?usp=sharing
 
 ### Conclusion
 This project offers an automated, real-time synchronization solution between Google Sheets and Firestore. It supports full CRUD operations, conflict resolution through a "Last Write Wins" strategy, and efficient handling of high-frequency updates using FastAPI's background task processing. A Redis cache layer is planned to further optimize performance and avoid API quota exhaustion. 
