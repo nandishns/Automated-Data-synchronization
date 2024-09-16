@@ -7,14 +7,14 @@ class FirebaseListener:
         self.collection_ref = self.db.collection('SalesData')
 
     def on_snapshot(self, col_snapshot, changes, read_time):
-        return
-        # for change in changes:
-        #     if change.type.name == 'ADDED':
-        #         self.update_google_sheet(change.document.to_dict())
-        #     elif change.type.name == 'MODIFIED':
-        #         self.update_google_sheet(change.document.to_dict())
-        #     elif change.type.name == 'REMOVED':
-        #         self.remove_row_in_google_sheet(change.document.to_dict())
+
+        for change in changes:
+            if change.type.name == 'ADDED':
+                self.update_google_sheet(change.document.to_dict())
+            elif change.type.name == 'MODIFIED':
+                self.update_google_sheet(change.document.to_dict())
+            elif change.type.name == 'REMOVED':
+                self.remove_row_in_google_sheet(change.document.to_dict())
 
     @staticmethod
     def update_google_sheet(document_data):
