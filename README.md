@@ -157,6 +157,15 @@ FIREBASE_ADMIN_KEY_PATH=
 ### Video Demo
 https://drive.google.com/drive/folders/14DzkV5ppT_sDwri0JO1XgzqZ_u8HoRDu?usp=sharing
 
+### Screenshots of Project
+SpreadSheet
+![image](https://github.com/user-attachments/assets/57914cc6-4588-4b73-bd02-305e12b0f060)
+Apps script
+![image](https://github.com/user-attachments/assets/31c3d29b-baea-4bb3-8485-40049c223a3a)
+ngrok
+![image](https://github.com/user-attachments/assets/193266da-bc77-4543-93b7-bd2839aae7b2)
+
+
 ### Conclusion
 This project offers an automated, real-time synchronization solution between Google Sheets and Firestore. It supports full CRUD operations, conflict resolution through a "Last Write Wins" strategy, and efficient handling of high-frequency updates using FastAPI's background task processing. A Redis cache layer is planned to further optimize performance and avoid API quota exhaustion. 
 
