@@ -89,7 +89,16 @@ System Design Diagram
    - Configure Google Apps Script to point to the FastAPI server webhook.
    - Set up Firestore listener to monitor changes in the database.
 
-4. **Running the Project**:
+4. **.env example**
+  ```
+# .env
+GOOGLE_SHEETS_KEY_PATH=
+GOOGLE_SHEETS_ID=
+GOOGLE_SHEET_NAME=
+FIREBASE_ADMIN_KEY_PATH=
+```
+
+6. **Running the Project**:
    - Start the FastAPI server.
    - Make changes in Google Sheets or Firestore to see real-time synchronization in action.
 
