@@ -141,7 +141,43 @@ System Design Diagram
    - Configure Google Apps Script to point to the FastAPI server webhook.
    - Set up Firestore listener to monitor changes in the database.
 
-4. **.env example**
+4. **Project Structure**
+```
+superjoin-assignment/
+│
+├── .venv/                         # Virtual environment
+│
+├── src/                           # Main source code directory
+│   ├── app.py                     # FastAPI application setup
+│   ├── config.py                  # Configuration and environment variables
+│   │
+│   ├── models/                    # Models for database interactions
+│   │   ├── firebase.py            # Firebase model for Firestore operations
+│   │
+│   ├── routers/                   # API routers for handling requests
+│   │   ├── sync.py                # Router for syncing data between Google Sheets and Firestore
+│   │   ├── delete_row.py          # Router for handling row deletions in Google Sheets
+│   │
+│   ├── services/                  # Services containing business logic
+│   │   ├── google_sheets_service.py  # Service for interacting with Google Sheets API
+│   │   ├── firebase_service.py       # Service for handling Firestore operations
+│   │   ├── firebase_listener.py      # Service for listening to Firestore changes
+│   │
+│   ├── utils/                     # Utility functions and helpers
+│   │   ├── sync_handler.py        # Utility functions for handling synchronization logic
+│   │
+│   ├── main.py                    # Entry point for running the FastAPI server
+│
+├── requirements.txt               # Python dependencies
+│
+├── README.md                      # Project documentation
+│
+├── .gitignore                     # Git ignore file
+│
+└── .env                           # Environment variables (not included in version control)
+```
+
+5. **.env example**
   ```
 # .env
 GOOGLE_SHEETS_KEY_PATH=
@@ -150,7 +186,7 @@ GOOGLE_SHEET_NAME=
 FIREBASE_ADMIN_KEY_PATH=
 ```
 
-5. **Running the Project**:
+6. **Running the Project**:
    - Start the FastAPI server.
    - Make changes in Google Sheets or Firestore to see real-time synchronization in action.
 
