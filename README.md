@@ -72,6 +72,58 @@ System Design Diagram
 - **Error Handling**: Robust error handling and retries manage API rate limits and network issues.
 - **Background Task Queue**: FastAPI's `BackgroundTasks` is used to queue and process multiple requests efficiently.
 - **Caching (Planned)**: A Redis cache layer is planned to temporarily store Google Sheets data, reducing API calls and preventing quota exhaustion.
+### Code Architecture and Design
+---
+#### 1. **Code Architecture**
+
+- **Modular Design**: The code is divided into different modules based on their functionality, such as services, models, and routers. This separation of concerns helps in organizing the code logically and makes it easier to maintain.
+
+- **Layered Structure**:
+  - **Models**: Handle interactions with Firebase Firestore, encapsulating the logic for CRUD operations on the database.
+  - **Services**: Contain the business logic for synchronizing data between Google Sheets and Firestore, as well as managing background tasks.
+  - **Routers**: Define the API endpoints for handling synchronization, providing a clear entry point for various operations.
+
+#### 2. **OOP Concepts Used**
+
+- **Classes and Objects**: 
+  - Classes such as `FirebaseModel`, `GoogleSheetsService`, and `FirebaseListener` encapsulate data and behavior related to specific components (Firestore, Google Sheets, and synchronization logic).
+  - Objects of these classes are instantiated to manage interactions with the database and Google Sheets.
+
+- **Encapsulation**:
+  - Each class is responsible for a specific part of the system, encapsulating the relevant data and methods. For example, the `FirebaseModel` class handles Firestore operations, while the `GoogleSheetsService` class manages interactions with Google Sheets.
+  - This encapsulation ensures that changes in one part of the system do not affect others, promoting modularity.
+
+- **Error Handling**:
+  - Classes and methods include error handling mechanisms to catch exceptions and handle them gracefully. This is implemented using `try` and `except` blocks, ensuring the system remains robust and reliable even in the face of unexpected issues.
+
+- **Background Task Handling**:
+  - The system utilizes FastAPI's `BackgroundTasks` to handle synchronization tasks asynchronously. This allows the server to queue and process multiple requests efficiently, enhancing performance and responsiveness.
+
+#### 3. **Routers Created**
+
+- **`sync` Router**:
+  - **Endpoint**: `/sync`
+  - **Functionality**: Handles the synchronization of data from Google Sheets to Firestore. It processes the webhook requests triggered by changes in Google Sheets, retrieves the changed data, and updates Firestore accordingly.
+
+- **`delete_row` Router**:
+  - **Endpoint**: `/delete_row`
+  - **Functionality**: Handles deletion requests from Google Sheets. When a row is removed in Google Sheets, this router receives the request, identifies the corresponding document in Firestore, and deletes it.
+
+- **Routing with FastAPI**:
+  - Each router is defined using FastAPI's `APIRouter` to group related endpoints together. This modular approach makes the code easier to understand and extend.
+  - Routers are registered with the FastAPI application, providing a clear and organized way to define and manage the API endpoints.
+
+#### 4. **Flow of Data and Interaction**
+
+- **Data Synchronization**:
+  - Changes in Google Sheets trigger webhooks, which are processed by the `sync` router. The router invokes the `GoogleSheetsService` to fetch the latest data and `FirebaseModel` to update Firestore.
+  - Changes in Firestore are captured by `FirebaseListener`, which updates Google Sheets using the `GoogleSheetsService`.
+
+- **Conflict Resolution**:
+  - The synchronization logic includes conflict resolution based on the "Last Write Wins" strategy, using timestamps to determine the most recent change.
+
+- **Background Processing**:
+  - Background tasks are utilized to handle synchronization requests without blocking the main thread, ensuring efficient processing of multiple requests.
 
 ### Getting Started
 1. **Prerequisites**:
