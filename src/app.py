@@ -4,6 +4,7 @@ import sys
 from fastapi import FastAPI, logger
 from fastapi.middleware.cors import CORSMiddleware
 from src.routers.sync.sync import router as SYNC
+from src.routers.delete_row.delete_row import router as DELETE_ROW
 from .services.firebase_listener_service import firebase_listener
 
 from .utils.utils import read_markdown_file
@@ -28,6 +29,7 @@ async def startup_event():
     print("Firebase listener started.")
 
 app.include_router(SYNC, tags=["SuperJoin Assignment"])
+app.include_router(DELETE_ROW, tags=["SuperJoin Assignment"])
 
 
 origins = ["*"]

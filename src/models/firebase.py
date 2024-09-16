@@ -1,14 +1,14 @@
-# app/models/firebase.py
 import firebase_admin
 from firebase_admin import credentials, firestore
 from src.config import settings
-import uuid  # Import the uuid module for generating unique IDs
+from datetime import datetime
 
 class FirebaseModel:
     def __init__(self):
         cred = credentials.Certificate(settings.firebase_credentials)
         firebase_admin.initialize_app(cred)
         self.db = firestore.client()
+        self.collection_ref = self.db.collection('SalesData')
 
     def update_firestore(self, data):
         # Assuming a collection named 'SalesData'
@@ -17,13 +17,14 @@ class FirebaseModel:
         for record in data:
             # Constructing the document data based on the new schema
             document_data = {
-                'Product ID': record.get('Product ID'),
+                'Product ID': int(record.get('Product ID')),
                 'Product': record.get('Product'),
                 'Category': record.get('Category'),
                 'Date': record.get('Date'),
                 'Quantity Sold': record.get('Quantity Sold'),
                 'Unit Price': record.get('Unit Price'),
-                'Total Revenue': record.get('Total Revenue')
+                'Total Revenue': record.get('Total Revenue'),
+                'last_modified': datetime.utcnow().isoformat()
             }
 
             # Check if all fields are empty
@@ -45,6 +46,14 @@ class FirebaseModel:
                 # Document doesn't exist, create a new one
                 collection_ref.document(document_id).set(document_data)
                 print(f"Document {document_id} created.")
-                # Optionally: you can update the Google Sheet to store this UUID in the corresponding row
+
+    def delete_document_by_product_id(self, product_id):
+        try:
+            self.collection_ref.document(str(product_id)).delete()
+            print(f"Deleted document with Product ID {product_id}")
+        except Exception as e:
+            print(f"An error occurred while deleting document with Product ID {product_id}: {e}")
+
+
 
 firebase_model = FirebaseModel()
