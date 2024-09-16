@@ -109,4 +109,16 @@ https://drive.google.com/drive/folders/14DzkV5ppT_sDwri0JO1XgzqZ_u8HoRDu?usp=sha
 This project offers an automated, real-time synchronization solution between Google Sheets and Firestore. It supports full CRUD operations, conflict resolution through a "Last Write Wins" strategy, and efficient handling of high-frequency updates using FastAPI's background task processing. A Redis cache layer is planned to further optimize performance and avoid API quota exhaustion. 
 
 ### Comments
-Feel free to add your thoughts or any challenges faced during the project here. We will read and consider your insights!
+- **Integrating Google Sheets API**: Setting up the Google Sheets API and ensuring proper permissions was a bit challenging initially. There were multiple steps to get the API credentials and service account in place, but once configured, it worked seamlessly.
+
+- **Real-time Synchronization**: Implementing real-time synchronization was tricky, especially when handling updates from both Google Sheets and Firestore. Ensuring data consistency while minimizing the number of API calls required careful planning.
+
+- **Conflict Resolution**: Handling simultaneous edits in both Google Sheets and Firestore was a major challenge. Implementing a "Last Write Wins" strategy helped simplify this, but it required adding timestamps and making sure they were used effectively to resolve conflicts.
+
+- **API Rate Limits**: We encountered API rate limits while interacting with Google Sheets frequently. To address this, we planned to integrate Redis as a caching layer to reduce the number of direct API calls, but this is still a pending implementation.
+
+- **Concurrency Handling**: Using FastAPI's background tasks helped manage multiple incoming requests, ensuring that the server wasn't overwhelmed. This was particularly useful for maintaining the responsiveness of the synchronization process.
+
+- **Testing**: Testing the system with various scenarios, including network failures and simultaneous edits, was time-consuming but essential. It helped identify edge cases and refine the conflict resolution strategy.
+
+- **Overall Learning Experience**: This project was a great learning experience in dealing with real-time data synchronization, handling APIs, and implementing conflict resolution strategies. It was challenging but rewarding to see everything come together.
