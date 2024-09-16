@@ -7,56 +7,98 @@
 Build a solution that enables real-time synchronization of data between a Google Sheet and a specified database (e.g., MySQL, PostgreSQL). The solution should detect changes in the Google Sheet and update the database accordingly, and vice versa.
 
 ### Problem Statement
-Many businesses use Google Sheets for collaborative data management and databases for more robust and scalable data storage. However, keeping the data synchronised between Google Sheets and databases is often a manual and error-prone process. Your task is to develop a solution that automates this synchronisation, ensuring that changes in one are reflected in the other in real-time.
+Many businesses use Google Sheets for collaborative data management and databases for more robust and scalable data storage. However, keeping the data synchronized between Google Sheets and databases is often a manual and error-prone process. Your task is to develop a solution that automates this synchronization, ensuring that changes in one are reflected in the other in real-time.
 
 ### Requirements:
-1. Real-time Synchronisation
+1. Real-time Synchronization
   - Implement a system that detects changes in Google Sheets and updates the database accordingly.
-   - Similarly, detect changes in the database and update the Google Sheet.
-  2.	CRUD Operations
-   - Ensure the system supports Create, Read, Update, and Delete operations for both Google Sheets and the database.
-   - Maintain data consistency across both platforms.
+  - Similarly, detect changes in the database and update the Google Sheet.
+2. CRUD Operations
+  - Ensure the system supports Create, Read, Update, and Delete operations for both Google Sheets and the database.
+  - Maintain data consistency across both platforms.
    
 ### Optional Challenges (This is not mandatory):
 1. Conflict Handling
-- Develop a strategy to handle conflicts that may arise when changes are made simultaneously in both Google Sheets and the database.
-- Provide options for conflict resolution (e.g., last write wins, user-defined rules).
-    
+   - Develop a strategy to handle conflicts that may arise when changes are made simultaneously in both Google Sheets and the database.
+   - Provide options for conflict resolution (e.g., last write wins, user-defined rules).
 2. Scalability: 	
-- Ensure the solution can handle large datasets and high-frequency updates without performance degradation.
-- Optimize for scalability and efficiency.
+   - Ensure the solution can handle large datasets and high-frequency updates without performance degradation.
+   - Optimize for scalability and efficiency.
 
-## Submission ⏰
-The timeline for this submission is: **Next 2 days**
 
-Some things you might want to take care of:
-- Make use of git and commit your steps!
-- Use good coding practices.
-- Write beautiful and readable code. Well-written code is nothing less than a work of art.
-- Use semantic variable naming.
-- Your code should be organized well in files and folders which is easy to figure out.
-- If there is something happening in your code that is not very intuitive, add some comments.
-- Add to this README at the bottom explaining your approach (brownie points 😋)
-- Use ChatGPT4o/o1/Github Co-pilot, anything that accelerates how you work 💪🏽. 
+We have a checklist at the bottom of this README file, which you should update as you progress with your assignment. It will help us evaluate your project.
 
-Make sure you finish the assignment a little earlier than this so you have time to make any final changes.
+- [✔️] My code's working just fine! 🥳
+- [✔️] I have recorded a video showing it working and embedded it in the README ▶️
+- [✔️] I have tested all the normal working cases 😎
+- [✔️] I have even solved some edge cases (brownie points) 💪
+- [✔️] I added my very planned-out approach to the problem at the end of this README 📜
+---
+System Design Diagram 
+![image](https://github.com/user-attachments/assets/30d0ae77-df4d-4b92-b04b-18ead0b0fb07)
+### Tech Stack
+- **Backend Framework**: FastAPI
+- **Database**: Firebase Firestore
+- **Google Sheets Integration**: Google Sheets API, Google Apps Script
+- **Programming Language**: Python
+- **Authentication**: Firebase Admin SDK for secure access to Firestore
+- **Task Scheduling**: Google Apps Script for triggering synchronization
+- **Conflict Resolution**: Custom logic within the synchronization process
+- **Background Task Queue**: FastAPI BackgroundTasks
+- **Caching (Planned)**: Redis for caching Google Sheets data
 
-Once you're done, make sure you **record a video** showing your project working. The video should **NOT** be longer than 120 seconds. While you record the video, tell us about your biggest blocker, and how you overcame it! Don't be shy, talk us through, we'd love that.
+### Approach
 
-We have a checklist at the bottom of this README file, which you should update as your progress with your assignment. It will help us evaluate your project.
+#### Real-time Synchronization
+1. **Google Sheets to Firestore**:
+   - **Google Apps Script**: Utilized to detect changes in Google Sheets. It triggers on edit (`onEdit`) or structural changes (`onChange`) and sends a webhook to the FastAPI server.
+   - **FastAPI Webhook**: Receives the webhook, processes the change, and updates Firestore accordingly. Data is mapped from Google Sheets to a Firestore document structure.
 
-- [ ] My code's working just fine! 🥳
-- [ ] I have recorded a video showing it working and embedded it in the README ▶️
-- [ ] I have tested all the normal working cases 😎
-- [ ] I have even solved some edge cases (brownie points) 💪
-- [ ] I added my very planned-out approach to the problem at the end of this README 📜
+2. **Firestore to Google Sheets**:
+   - **Firestore Listener**: Monitors changes in Firestore documents and triggers updates in Google Sheets.
+   - **Google Sheets API**: Updates the relevant row in Google Sheets to reflect changes from Firestore, ensuring bidirectional synchronization.
+   - **Conflict Resolution**: Employs a "Last Write Wins" strategy using timestamps to handle simultaneous changes.
 
-## Got Questions❓
-Feel free to check the discussions tab, you might get some help there. Check out that tab before reaching out to us. Also, did you know, the internet is a great place to explore? 😛
+#### CRUD Operations
+- Supports Create, Read, Update, and Delete operations in both Google Sheets and Firestore.
+- Automatically synchronizes new entries, updates, and deletions between Google Sheets and Firestore.
 
-We're available at techhiring@superjoin.ai for all queries. 
+#### Conflict Handling
+- **Strategy**: Implemented a "Last Write Wins" strategy where each record includes a `last_modified` timestamp. The most recent change based on timestamps is applied.
+- **Fallback**: Logs conflicts that can't be automatically resolved for manual intervention.
 
-All the best ✨.
+#### Scalability
+- **Efficient API Usage**: Batch operations and optimized API calls are used to handle high-frequency updates.
+- **Error Handling**: Robust error handling and retries manage API rate limits and network issues.
+- **Background Task Queue**: FastAPI's `BackgroundTasks` is used to queue and process multiple requests efficiently.
+- **Caching (Planned)**: A Redis cache layer is planned to temporarily store Google Sheets data, reducing API calls and preventing quota exhaustion.
 
-## Developer's Section
-*Add your video here, and your approach to the problem (optional). Leave some comments for us here if you want, we will be reading this :)*
+### Getting Started
+1. **Prerequisites**:
+   - Google Cloud Project with Sheets API enabled.
+   - Firebase Project with Firestore Database.
+   - Service Account Key for authentication.
+   - Python environment set up with necessary dependencies.
+
+2. **Installation**:
+   - Clone the repository.
+   - Install dependencies using `pip install -r requirements.txt`.
+   - Set up environment variables for Google Sheets and Firebase credentials.
+   - Deploy the FastAPI server.
+
+3. **Configuration**:
+   - Configure Google Apps Script to point to the FastAPI server webhook.
+   - Set up Firestore listener to monitor changes in the database.
+
+4. **Running the Project**:
+   - Start the FastAPI server.
+   - Make changes in Google Sheets or Firestore to see real-time synchronization in action.
+
+### Video Demo
+*Add your video demo link here.*
+
+### Conclusion
+This project offers an automated, real-time synchronization solution between Google Sheets and Firestore. It supports full CRUD operations, conflict resolution through a "Last Write Wins" strategy, and efficient handling of high-frequency updates using FastAPI's background task processing. A Redis cache layer is planned to further optimize performance and avoid API quota exhaustion. 
+
+### Comments
+Feel free to add your thoughts or any challenges faced during the project here. We will read and consider your insights!
