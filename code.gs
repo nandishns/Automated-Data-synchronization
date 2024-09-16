@@ -1,28 +1,32 @@
 
 function onEdit(e) {
+    var range = e.range; 
+    var sheet = e.source.getActiveSheet();
+    var row = range.getRow(); 
+    var productIDCell = sheet.getRange(row, 1); 
+    var productID = productIDCell.getValue();
     
-    var value = e.value;
+    var value = e.value; // Get the new value of the edited cell
 
+    // Construct the payload with the necessary information
     var payload = {
-      range: range.getA1Notation(),
-      value: value,
-      sheetName: sheet.getName(),
-      row: row,
-      productID: productID  
+        range: range.getA1Notation(),
+        value: value,
+        sheetName: sheet.getName(),
+        row: row,
+        productID: productID  
     };
 
     var options = {
-      'method': 'post',
-      'contentType': 'application/json',
-      'payload': JSON.stringify(payload)
+        'method': 'post',
+        'contentType': 'application/json',
+        'payload': JSON.stringify(payload)
     };
 
-   
     var url = 'https://1d0b-2406-7400-113-aac5-f01a-2e21-fd96-28f1.ngrok-free.app/sync'; 
-
     UrlFetchApp.fetch(url, options);
-  
 }
+
 
 // Function to handle structural changes in the sheet
 function onChange(e) {
